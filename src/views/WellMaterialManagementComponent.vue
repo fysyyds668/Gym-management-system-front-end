@@ -1,0 +1,167 @@
+<script setup lang="ts">
+
+import {onMounted, ref} from "vue";
+import {Delete, Edit} from "@element-plus/icons-vue";
+import {wellMaterialGetService,wellMaterialDeleteService} from "@/api/material"
+import wellMateriaChannelEdit from "@/views/WellMateriaChannelEdit.vue"
+import {ElMessage, ElMessageBox} from "element-plus";
+
+const searchText=ref('')
+const total=ref(0)
+const currentPage=ref(1)
+const pageSize=ref(8)
+const dialog=ref()
+const tableData=ref([])
+const loading=ref(false)
+const addCoach=()=>{
+  dialog.value.open({})
+}
+
+const handleEdit=({row}:{row:any})=>{
+  dialog.value.open(row)
+}
+const handleDelete= async ({row}:{row:any})=>{
+  await ElMessageBox.confirm('你确定要删除吗','温馨提示',{
+    type:'warning',
+    confirmButtonText:'确定',
+    cancelButtonText:'取消'
+  })
+  const response=await wellMaterialDeleteService(row.materialId)
+  fetchData(currentPage.value,pageSize.value)
+}
+
+const fetchData=async (page,size)=>{
+  try {
+    loading.value=true
+
+    const materialName=searchText.value
+    const response=await wellMaterialGetService({materialName,page,size})
+    tableData.value=response.data.data.pageList
+    total.value=response.data.data.total
+
+    loading.value=false
+  }catch (error){
+    console.error(error)
+  }
+}
+const handlePageChange=(page)=>{
+  currentPage.value=page
+  fetchData(page,pageSize.value)
+}
+onMounted(()=>{
+  fetchData(currentPage.value,pageSize.value)
+})
+const onSuccess=()=>{
+  fetchData(currentPage.value,pageSize.value)
+}
+const onSearch=()=>{
+  fetchData(currentPage.value,pageSize.value)
+}
+
+</script>
+
+<template>
+  <div class="frame">
+    <el-card class="card1">
+      <el-row>
+        <el-col :span="12">
+          <span style="font-size: 30px">
+            好器材
+          </span>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <div>
+          <el-breadcrumb>
+            <el-breadcrumb-item :to="{path:'/home/homePage'}">首页</el-breadcrumb-item>
+            <el-breadcrumb-item><span>好器材</span></el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
+      </el-row>
+
+      <el-row :gutter="15" style="top: 15px">
+        <el-col :span="6">
+          <el-input v-model="searchText" placeholder="请输入要查找的器材"></el-input>
+        </el-col>
+        <el-col :span="8">
+          <el-button type="primary" @click="onSearch">查询</el-button>
+          <el-button type="primary" @click="addCoach">添加器材</el-button>
+        </el-col>
+      </el-row>
+
+      <el-table :data="tableData" v-loading="loading">
+        <el-table-column type="index" label="序号" width="200px"></el-table-column>
+        <el-table-column prop="materialId" label="器材编号"></el-table-column>
+        <el-table-column prop="name" label="器材名"></el-table-column>
+        <el-table-column prop="num" label="数量" ></el-table-column>
+        <el-table-column prop="unitPrice" label="单价"></el-table-column>
+        <el-table-column prop="totalPrice" label="总价"></el-table-column>
+        <el-table-column label="操作" width="200px">
+          <template #default="{row}">
+            <el-button
+                :icon="Edit"
+                plain
+                circle
+                type="primary"
+                @click="handleEdit({row})">
+            </el-button>
+            <el-button
+                :icon="Delete"
+                plain
+                circle
+                type="danger"
+                @click="handleDelete({row})">
+            </el-button>
+          </template>
+        </el-table-column>
+
+        <template #empty>
+          <el-empty description="没有数据"></el-empty>
+        </template>
+      </el-table>
+
+      <el-pagination
+          class="pagination1"
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
+          :page-sizes="[5, 6, 7, 8,9,10]"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+          @current-change="handlePageChange"
+          @click="onSuccess"
+      ></el-pagination>
+
+      <wellMateriaChannelEdit ref="dialog" @success="onSuccess">
+
+      </wellMateriaChannelEdit>
+
+    </el-card>
+  </div>
+
+</template>
+
+<style scoped>
+.frame {
+  position: fixed;
+  top: 100px;
+  left: 220px;
+  right: 20px;
+  bottom: 20px;
+}
+
+.el-table {
+  position: relative;
+  top: 20px;
+  width: 100%;
+  height: 500px;
+}
+
+.card1{
+  min-height: 100%;
+}
+.pagination1{
+  position: absolute;
+  bottom: 20px;
+}
+</style>
