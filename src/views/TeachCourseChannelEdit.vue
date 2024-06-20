@@ -66,8 +66,15 @@ const rules={
       <el-form-item label="课程ID" prop="courseId">
         <el-input v-model="fromModel.courseId"></el-input>
       </el-form-item>
-      <el-form-item label="日期" prop="coachId">
-        <el-input v-model="fromModel.time"></el-input>
+<!--      <el-form-item label="日期" prop="coachId">-->
+<!--        <el-input  v-model="fromModel.time"></el-input>-->
+<!--      </el-form-item>-->
+      <el-form-item label="日期" prop="time">
+        <el-date-picker
+            v-model="fromModel.time"
+            type="date"
+            placeholder="Pick a day"
+        />
       </el-form-item>
       <el-form-item label="时间" prop="coachId">
         <el-input v-model="fromModel.period"></el-input>

@@ -1,41 +1,40 @@
 <script setup lang="ts">
 
-import {onMounted, ref} from "vue";
-import {Delete, Edit} from "@element-plus/icons-vue";
-import {teachCourseGetPageService,teachCourseDeleteService} from "@/api/teach"
-import TeachCourseChannelEdit from "@/views/TeachCourseChannelEdit.vue"
+const props=defineProps({
+  formModel:{
+    type:Object,
+    required:true
+  },
+})
 
-const searchText1=ref('')
-const searchText2=ref('')
+const formModel = reactive({ ...props.formModel });
+
+import {onMounted, reactive, ref} from "vue";
+import {signInGetPageCourseService,signInAddInformationService,signInInformationService} from "@/api/signIn"
+
+const searchText=ref('')
 const total=ref(0)
 const currentPage=ref(1)
 const pageSize=ref(5)
 const dialog=ref()
 const tableData=ref([])
-const addCoach=()=>{
-  dialog.value.open({})
-}
-
-const handleEdit=({row}:{row:any})=>{
-  console.log("编辑",row)
-  dialog.value.open(row)
-}
-const handleDelete=async ({row}:{row:any})=>{
-  console.log(row.id)
-  const response=await teachCourseDeleteService(row.id)
-  fetchData(currentPage.value,pageSize.value)
-}
+const dialogVisible=ref(false)
 
 const fetchData=async (page,size)=>{
   try {
-    const courseName=searchText2.value
-    const coachName=searchText1.value
+    console.log(props.formModel,formModel.courseId,formModel.classTime,formModel.period,'已签',page,size)
+    const response = await signInInformationService({
+      coachId: formModel.coachId,
+      courseId: formModel.courseId,
+      classTime: formModel.classTime,
+      period: formModel.period,
+      sign: '已签',
+      page: page,
+      size: size
+    });
 
-    const response=await teachCourseGetPageService({coachName,courseName,page,size})
     tableData.value=response.data.data.pageList
     total.value=response.data.data.total
-    console.log(total.value+'total')
-    console.log(response)
 
   }catch (error){
     console.error(error)
@@ -45,16 +44,19 @@ const handlePageChange=(page)=>{
   currentPage.value=page
   fetchData(page,pageSize.value)
 }
+
 onMounted(()=>{
   fetchData(currentPage.value,pageSize.value)
 })
-const onSuccess=()=>{
+
+
+
+const onSignIn1=async ()=>{
+  await signInAddInformationService(formModel.value)
+
   fetchData(currentPage.value,pageSize.value)
 }
 
-const onSearch=()=>{
-  fetchData(currentPage.value,pageSize.value)
-}
 
 </script>
 
@@ -64,7 +66,7 @@ const onSearch=()=>{
       <el-row>
         <el-col :span="12">
           <span style="font-size: 30px">
-            授课信息
+            已签
           </span>
         </el-col>
       </el-row>
@@ -73,52 +75,38 @@ const onSearch=()=>{
         <div>
           <el-breadcrumb>
             <el-breadcrumb-item :to="{path:'/home/homePage'}">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><span>授课信息</span></el-breadcrumb-item>
+            <el-breadcrumb-item :to="{path:'/home/signIn'}">签到</el-breadcrumb-item>
+            <el-breadcrumb-item><span>已签</span></el-breadcrumb-item>
           </el-breadcrumb>
         </div>
       </el-row>
 
       <el-row :gutter="15" style="top: 15px">
         <el-col :span="6">
-          <el-input v-model="searchText1" placeholder="请输入要查找的教练"></el-input>
-        </el-col>
-        <el-col :span="6">
-          <el-input v-model="searchText2" placeholder="请输入要查找的课程"></el-input>
+          <el-input v-model="searchText" placeholder="请输入要查找的用户"></el-input>
         </el-col>
         <el-col :span="8">
-          <el-button type="primary" @click="onSearch">查询</el-button>
-          <el-button type="primary" @click="addCoach">添加课程</el-button>
+          <el-button type="primary">查询</el-button>
         </el-col>
       </el-row>
 
       <el-table :data="tableData">
         <el-table-column type="index" label="序号" width="200px"></el-table-column>
-        <el-table-column prop="id" label="授课Id" v-if="false"></el-table-column>
+        <el-table-column prop="vipId" label="用户ID"></el-table-column>
+        <el-table-column prop="vipName" label="用户名"></el-table-column>
         <el-table-column prop="coachId" label="教练ID"></el-table-column>
         <el-table-column prop="coachName" label="教练名称"></el-table-column>
         <el-table-column prop="courseId" label="课程号" ></el-table-column>
         <el-table-column prop="courseName" label="课程名" ></el-table-column>
-        <el-table-column prop="time" label="日期"></el-table-column>
+        <el-table-column prop="classTime" label="日期"></el-table-column>
         <el-table-column prop="period" label="时间"></el-table-column>
-        <el-table-column prop="number" label="数量"></el-table-column>
-        <el-table-column label="操作" width="200px">
-          <template #default="{row}">
-            <el-button
-                :icon="Edit"
-                plain
-                circle
-                type="primary"
-                @click="handleEdit({row})">
-            </el-button>
-            <el-button
-                :icon="Delete"
-                plain
-                circle
-                type="danger"
-                @click="handleDelete({row})">
-            </el-button>
-          </template>
-        </el-table-column>
+        <el-table-column prop="signTime" label="签到时间"></el-table-column>
+<!--        <el-table-column label="操作" width="200px">-->
+<!--          <template #default="{row}">-->
+<!--            <el-button type="primary" @click="onSignIn(row)">签到</el-button>-->
+<!--            <el-button type="primary" @click="onSignIn(row)">查看</el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
         <template #empty>
           <el-empty description="没有数据"></el-empty>
@@ -135,9 +123,25 @@ const onSearch=()=>{
           @current-change="handlePageChange"
       ></el-pagination>
 
-      <TeachCourseChannelEdit ref="dialog" @success="onSuccess">
+      <el-dialog
+          v-model="dialogVisible"
+          :title="'签到'"
+          width="40%">
+        <el-form>
+          <el-form-item label="会员ID">
+            <el-input v-model="formModel.vipId"></el-input>
+          </el-form-item>
+        </el-form>
 
-      </TeachCourseChannelEdit>
+        <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible=false">取消</el-button>
+          <el-button type="primary" @click="onSignIn1">确认</el-button>
+        </span>
+        </template>
+
+
+      </el-dialog>
 
     </el-card>
   </div>

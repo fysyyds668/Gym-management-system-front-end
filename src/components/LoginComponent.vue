@@ -52,7 +52,7 @@
         </el-form-item>
         <el-form-item>
           <div >
-            <el-checkbox >记住密码</el-checkbox>
+            <el-checkbox v-model="check" disabled>记住密码</el-checkbox>
           </div>
           <div class="el-link1">
             <el-link style="color: #ADD8E6 ;background: none">忘记密码?</el-link>
@@ -81,9 +81,11 @@ import {User, Lock, Right, Back} from "@element-plus/icons-vue";
 import {ref, watch} from "vue";
 import {ElMessage} from "element-plus";
 import router from "@/router/index.js";
+import {userUserStore} from "@/stores/index.js";
 
 const isRegister=ref(false)
 const form=ref()
+const check=ref(true)
 
 const formModel=ref({
   account:'',
@@ -129,28 +131,18 @@ watch(isRegister,()=>{
   }
 })
 
+const userStore=userUserStore()
 const login=async ()=>{
+  userStore.removeToken()
   await form.value.validate()
   console.log("开始登录请求")
-
   const response=await userLoginService(formModel.value)
+  userStore.setToken(response.data.data)
 
   console.log(response)
 
-  console.log(response.data.mes)
-  if (response.data.mes==='登录成功！')
-  {
-
-    localStorage.setItem('token',response.data.data)
-    ElMessage.success('登录成功！')
-    router.push('home')
-  }else if(response.data.mes==='密码错误！'){
-    ElMessage.error('密码错误！')
-  }else if(response.data.mes==='账号不存在！'){
-    ElMessage.warning('账号不存在！')
-  }
   // ElMessage.success("登陆成功")
-  // router.push('home')
+   router.push('home')
 }
 
 

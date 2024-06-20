@@ -14,6 +14,9 @@ import TeachCourseComponent from "@/views/TeachCourseComponent.vue";
 import bookCourseInformationComponent from "@/views/bookCourseInformationComponent.vue";
 import WellMaterialManagementComponent from "@/views/WellMaterialManagementComponent.vue";
 import BadMaterialManagementComponent from "@/views/BadMaterialManagementComponent.vue";
+import SignInComponent from "@/views/SignInComponent.vue";
+import signInInformation from "@/views/signInInformation.vue";
+import {userUserStore} from "@/stores/index.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +62,14 @@ const router = createRouter({
         },{
           path:'wellMaterialManagement',
           component:WellMaterialManagementComponent
+        },{
+          path:'signIn',
+          component:SignInComponent
+        }, {
+          path: 'signInInformation',
+          name: 'signInInformation',
+          component: signInInformation,
+          props:true
         }
       ]
     },
@@ -81,6 +92,15 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     }
   ]
+})
+
+router.beforeEach((to, from, next)=>{
+  const userStore=userUserStore()
+  if(!userStore.token && to.path!=='/'){
+    next('/')
+  }else {
+    next()
+  }
 })
 
 export default router

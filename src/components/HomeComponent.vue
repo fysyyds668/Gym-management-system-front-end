@@ -108,6 +108,24 @@
               <router-link to="/home/bedMaterialManagement" class="custom-link">坏器材</router-link>
             </el-menu-item>
           </el-sub-menu>
+          
+<!--          <el-menu-item index="8">-->
+<!--            <el-icon><Select /></el-icon>-->
+<!--            <router-link to="/home/signIn" class="custom-link">签到</router-link>-->
+<!--          </el-menu-item>-->
+
+          <el-sub-menu index="8">
+            <template #title>
+              <el-icon><Select /></el-icon>
+              <span>签到中心</span>
+            </template>
+            <el-menu-item index="8-1" >
+              <router-link to="/home/signIn" class="custom-link">签到</router-link>
+            </el-menu-item>
+            <el-menu-item index="8-2" >
+              <router-link to="/home/signInInformation" class="custom-link">签到信息</router-link>
+            </el-menu-item>
+          </el-sub-menu>
 
 
     </el-menu>
@@ -129,7 +147,7 @@ import {
   Document,
   Menu as IconMenu,
   Location,
-  Setting, House, Position, List, Bicycle, DocumentCopy, HomeFilled, ToiletPaper,
+  Setting, House, Position, List, Bicycle, DocumentCopy, HomeFilled, ToiletPaper,Select
 } from '@element-plus/icons-vue'
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)

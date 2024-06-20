@@ -134,6 +134,14 @@ const addChannelEdit=async ()=>{
     const fetchData = async (page, size) => {
       try {
         loading.value=true
+        setTimeout(()=>{
+
+          if (loading.value===true)
+          ElMessage.error('请求超时')
+          loading.value=false
+
+        },5000)
+
         const vipName=searchText.value
         const response = await request.post('/vip/get/page',{vipName,page,size});
 

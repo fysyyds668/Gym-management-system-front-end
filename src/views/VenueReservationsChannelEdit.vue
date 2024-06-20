@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import {avatarEmits} from "element-plus";
-//import {addUserService, updateUserService} from "@/api/user";
+import {venueReservationAddService} from "@/api/venueReservation";
 const dialogVisible=ref(false)
 const fromModel=ref({
+  id:'',
   vipId: '',
   vipName: '',
   coachId: '',
@@ -17,36 +18,16 @@ const fromModel=ref({
   sign: '',
 })
 
-// const options=[
-//   {
-//     value:'青铜会员',
-//     label:'青铜会员'
-//   },{
-//     value:'白银会员',
-//     label:'白银会员'
-//   },{
-//     value:'黄金会员',
-//     label:'黄金会员'
-//   },{
-//     value:'至尊会员',
-//     label:'至尊会员'
-//   }]
 const open=(row)=>{
   dialogVisible.value=true
   fromModel.value={...row}
+  //console.log(fromModel.value.coachId+'========================')
 }
 const emit=defineEmits(['success'])
 const onSubmit=async ()=>{
-  const isEdit=fromModel.value.coachId
-  if(isEdit){
-    //const response= await updateUserService(fromModel.value)
-    //console.log("修改"+response)
 
-  }else {
-    console.log(fromModel.value)
-    //const response =await addUserService(fromModel.value)
+    const response= await venueReservationAddService(fromModel.value)
 
-  }
   dialogVisible.value=false;
   emit('success')
 }
@@ -55,12 +36,7 @@ defineExpose({
 })
 
 const rules={
-  name:[{required:true,message:'请输入姓名',trigger:'blur'}],
-  age:[{required:true,message:'请输入年龄',trigger:'blur'}],
-  sex:[{required:true,message:'请输入年龄',trigger:'blur'}],
-  type:[{required:true,message:'请输入年龄',trigger:'blur'}],
-  phone:[{required:true,message:'请输入年龄',trigger:'blur'}],
-  identityCard:[{required:true,message:'请输入年龄',trigger:'blur'}]
+  vipId:[{required:true,message:'请输入姓名',trigger:'blur'}],
 }
 
 

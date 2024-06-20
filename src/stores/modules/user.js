@@ -6,8 +6,8 @@ export const userUserStore=defineStore(
     'big-user',
     ()=>{
     const token =ref('')
-    const setToken = (newTonken)=>{
-        token.value=newTonken
+    const setToken = (newToken)=>{
+        token.value=newToken
     }
     const removeToken=()=>{
         token.value=''

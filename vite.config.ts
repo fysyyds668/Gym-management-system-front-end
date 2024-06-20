@@ -11,7 +11,15 @@ export default defineConfig({
     vue(),
     vueJsx(),
     VueDevTools(),
-  ],
+  ],server:{
+    port:5173,
+    proxy:{
+      '/api':{
+        target:'http://10.254.10.85:8080',
+        changeOrigin:true
+}
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

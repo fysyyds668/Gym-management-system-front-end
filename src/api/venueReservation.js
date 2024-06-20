@@ -7,9 +7,9 @@ export const venueReservationGetPageService=({page,size})=>
 //查询已预约信息
 export const venueReservationBookInformationService=({page,size})=>
     request.post('/subscribe/get/subscribevip',{page,size})
-export const venueReservationAddService=()=>
-    request.post("/subscribe/add",)
+export const venueReservationAddService=({vipId,courseId,coachId,time,period})=>
+    request.post("/subscribe/add",{vipId,courseId,coachId,time,period})
 
-export const venueReservationDeleteService=(courseId)=>
-    request.delete("/subscribe/delete",{params:{courseId}})
+export const venueReservationDeleteService=(id)=>
+    request.delete("/subscribe/delete",{params:{id}})
 

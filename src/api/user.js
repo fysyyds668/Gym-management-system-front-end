@@ -1,4 +1,6 @@
 import request from "@/utils/request.js";
+import {config} from "@vue/test-utils";
+import {userUserStore} from "@/stores/index.js";
 
 //注册
 export const userRegisterService=( {account,password} )=>
