@@ -11,12 +11,12 @@
         active-text-color="#ffd04b"
         @select="handleSelect"
     >
-      <span style="color:#f2f6f4;font-size: 25px; position: relative;left: 20px">健身房管理系统</span>
+      <span style="color:#e7c128;font-size: 25px; position: relative;left: 20px">健身房管理系统</span>
       <div class="spacer"></div>
       <el-sub-menu index="2">
-        <template #title>Admin</template>
-        <el-menu-item index="2-1">切换</el-menu-item>
-        <el-menu-item index="2-2">退出</el-menu-item>
+        <template #title>Hello：{{ user.userName }}</template>
+        <el-menu-item index="2-1" @click="onQuit">切换</el-menu-item>
+        <el-menu-item index="2-2" @click="onQuit">退出</el-menu-item>
 
       </el-sub-menu>
       <el-menu-item index="3" disabled> </el-menu-item>
@@ -108,11 +108,7 @@
               <router-link to="/home/bedMaterialManagement" class="custom-link">坏器材</router-link>
             </el-menu-item>
           </el-sub-menu>
-          
-<!--          <el-menu-item index="8">-->
-<!--            <el-icon><Select /></el-icon>-->
-<!--            <router-link to="/home/signIn" class="custom-link">签到</router-link>-->
-<!--          </el-menu-item>-->
+
 
           <el-sub-menu index="8">
             <template #title>
@@ -125,7 +121,6 @@
 
           </el-sub-menu>
 
-
     </el-menu>
 
     <router-view></router-view>
@@ -137,6 +132,7 @@ import { ref } from 'vue'
 
 const activeIndex = ref('1')
 const activeIndex2 = ref('1')
+const user=userUserStore()
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
@@ -147,11 +143,16 @@ import {
   Location,
   Setting, House, Position, List, Bicycle, DocumentCopy, HomeFilled, ToiletPaper,Select
 } from '@element-plus/icons-vue'
+import {userUserStore} from "@/stores";
+import router from "@/router";
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+}
+const onQuit=()=>{
+  router.push('/')
 }
 </script>
 

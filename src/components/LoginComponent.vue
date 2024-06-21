@@ -138,6 +138,7 @@ const login=async ()=>{
   console.log("开始登录请求")
   const response=await userLoginService(formModel.value)
   userStore.setToken(response.data.data)
+  userStore.setUser(formModel.value.account,formModel.value.password)
 
   console.log(response)
 

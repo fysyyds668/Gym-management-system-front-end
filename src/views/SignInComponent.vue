@@ -59,11 +59,8 @@ const onLook=(row)=>{
 
   formModel.value={...row}
   formModel.value.classTime=formModel.value.time
-
   console.log(formModel.value)
-
   const formModelSerialized = JSON.stringify(formModel.value);
-
   router.push({ name: 'signInInformation', query: { formModel: formModelSerialized } });
 
   //sendInformation.value=true

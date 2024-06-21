@@ -35,8 +35,9 @@ const formModel1=ref({
 const fetchData=async (page,size)=>{
   try {
 
-    console.log(formModel1.value)
+    //console.log(formModel1.value)
     const vipName=searchText.value
+    //console.log(formModel1.value,isSignIn.value,page,size)
     const response = await signInInformationService({
       vipName:vipName.value,
       coachId: formModel1.value.coachId,
@@ -47,6 +48,8 @@ const fetchData=async (page,size)=>{
       page: page,
       size: size
     });
+
+    console.log(response)
 
     tableData.value=response.data.data.pageList
     total.value=response.data.data.total
