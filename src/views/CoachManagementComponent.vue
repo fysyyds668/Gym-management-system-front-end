@@ -34,7 +34,10 @@ const handleDelete= async ({row}:{row:any})=>{
 const fetchData=async (page,size)=>{
   try {
     loading.value=true
-    const response=await coachGetPageService({page,size})
+
+    const coachName=searchText.value
+    console.log(coachName)
+    const response=await coachGetPageService({coachName,page,size})
     tableData.value=response.data.data.pageList
     total.value=response.data.data.total
     console.log(total.value+'total')
@@ -53,6 +56,9 @@ onMounted(()=>{
   fetchData(currentPage.value,pageSize.value)
 })
 const onSuccess=()=>{
+  fetchData(currentPage.value,pageSize.value)
+}
+const onSearch=()=>{
   fetchData(currentPage.value,pageSize.value)
 }
 
@@ -83,7 +89,7 @@ const onSuccess=()=>{
           <el-input v-model="searchText" placeholder="请输入要查找的教练"></el-input>
         </el-col>
         <el-col :span="8">
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click="onSearch">查询</el-button>
           <el-button type="primary" @click="addCoach">添加教练</el-button>
         </el-col>
       </el-row>

@@ -122,9 +122,7 @@
             <el-menu-item index="8-1" >
               <router-link to="/home/signIn" class="custom-link">签到</router-link>
             </el-menu-item>
-            <el-menu-item index="8-2" >
-              <router-link to="/home/signInInformation" class="custom-link">签到信息</router-link>
-            </el-menu-item>
+
           </el-sub-menu>
 
 

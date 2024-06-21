@@ -9,13 +9,16 @@ import App from './App.vue'
 import router from './router/index.js'
 import axios from "axios";
 
+import * as echarts from 'echarts'
+
+
 const app = createApp(App)
 
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
 
-axios.defaults.baseURL = 'http://10.246.125.93:8080';
 app.config.globalProperties.$http = axios;
+app.config.globalProperties.$echatrs=echarts;
 
 app.mount('#app')

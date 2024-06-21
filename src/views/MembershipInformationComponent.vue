@@ -62,14 +62,6 @@
       </template>
     </el-table>
 
-<!--    <el-pagination-->
-<!--        class="pagination1"-->
-<!--        background-->
-<!--        layout="prev, pager, next"-->
-<!--        :total="total"-->
-<!--        :page-size="pageSize"-->
-<!--        @current-change="handlePageChange">-->
-<!--    </el-pagination>-->
         <el-pagination
             class="pagination1"
             v-model:current-page="currentPage"
@@ -165,43 +157,12 @@ const addChannelEdit=async ()=>{
 
     });
 
-
     const onSuccess=()=>{
       fetchData(currentPage.value, pageSize.value);
     }
     const onSearch=()=>{
       fetchData(currentPage.value, pageSize.value);
     }
-
-// onMounted(async () => {
-//   try {
-//     const response = await $http.get('/vip/viplistuser');
-//     tableData.value = response.data.data;
-//
-//   } catch (error) {
-//     console.error('Error fetching data:', error);
-//   }
-// });
-
-// $http.post('/vip/viplistuser123',tableData)
-// $http.get('/vip/viplistuser123').then(result=>{
-//       console.log(result.data)}
-// ).catch(err=>{
-//     }
-//
-// )
-//
-// const searchConditions=ref({
-//
-// })
-
-// const search=function (){
-//   $http.get('/vip/search',{params:{...searchConditions.value}}).then(result=>{
-//
-//   }).catch(err=>{
-//
-//   })
-// }
 
 </script>
 

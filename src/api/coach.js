@@ -1,7 +1,7 @@
 import request from "@/utils/request.js";
 
-export const coachGetPageService=({page,size})=>
-    request.post("/coach/get/page",{page,size})
+export const coachGetPageService=({coachName,page,size})=>
+    request.post("/coach/get/page",{coachName,page,size})
 
 export const coachAddService=({name,age,sex,salary,identityCard})=>
     request.post("/coach/add",{name,age,sex,salary,identityCard})

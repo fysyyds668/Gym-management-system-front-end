@@ -69,7 +69,7 @@ const router = createRouter({
           path: 'signInInformation',
           name: 'signInInformation',
           component: signInInformation,
-          props:true
+          props: (route) => ({ formModel: route.params.formModel || route.query.formModel })
         }
       ]
     },

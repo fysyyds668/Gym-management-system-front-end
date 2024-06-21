@@ -11,10 +11,13 @@ const currentPage=ref(1)
 const pageSize=ref(5)
 const dialog=ref()
 const tableData=ref([])
+const searchText1=ref('')
 
 const fetchData=async (page,size)=>{
   try {
-    const response=await venueReservationGetPageService({page,size})
+    const coachName=searchText.value;
+    const courseName=searchText1.value;
+    const response=await venueReservationGetPageService({coachName,courseName,page,size})
     tableData.value=response.data.data.pageList
     total.value=response.data.data.total
 
@@ -35,6 +38,9 @@ const onSuccess=()=>{
 const onBook=(row)=>{
   dialog.value.open(row)
   console.log(row)
+}
+const onSearch=()=>{
+  fetchData(currentPage.value,pageSize.value)
 }
 </script>
 
@@ -60,10 +66,13 @@ const onBook=(row)=>{
 
       <el-row :gutter="15" style="top: 15px">
         <el-col :span="6">
-          <el-input v-model="searchText" placeholder="请输入要查找的场地"></el-input>
+          <el-input v-model="searchText" placeholder="请输入要查找的教练"></el-input>
+        </el-col>
+        <el-col :span="6">
+          <el-input v-model="searchText1" placeholder="请输入要查找的课程"></el-input>
         </el-col>
         <el-col :span="8">
-          <el-button type="primary">查询</el-button>
+          <el-button type="primary" @click="onSearch">查询</el-button>
         </el-col>
       </el-row>
 

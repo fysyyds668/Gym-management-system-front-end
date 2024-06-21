@@ -1,8 +1,8 @@
 import request from "@/utils/request.js";
 
 //查询可预约课程
-export const venueReservationGetPageService=({page,size})=>
-    request.post("/subscribe/get/subscribeclass",{page,size})
+export const venueReservationGetPageService=({coachName,courseName,page,size})=>
+    request.post("/subscribe/get/subscribeclass",{coachName,courseName,page,size})
 
 //查询已预约信息
 export const venueReservationBookInformationService=({page,size})=>

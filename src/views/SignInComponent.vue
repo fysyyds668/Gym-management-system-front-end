@@ -44,9 +44,7 @@ const formModel=ref({
   sign: ''
 })
 const onSignIn=async (row)=>{
-  console.log(row)
   dialogVisible.value=true
-
   formModel.value={...row}
   formModel.value.classTime=formModel.value.time
 
@@ -62,7 +60,11 @@ const onLook=(row)=>{
   formModel.value={...row}
   formModel.value.classTime=formModel.value.time
 
-  router.push({ name: 'signInInformation', props: { formModel: formModel.value } });
+  console.log(formModel.value)
+
+  const formModelSerialized = JSON.stringify(formModel.value);
+
+  router.push({ name: 'signInInformation', query: { formModel: formModelSerialized } });
 
   //sendInformation.value=true
 }
@@ -105,6 +107,7 @@ const onLook=(row)=>{
         <el-table-column prop="courseName" label="课程名" ></el-table-column>
         <el-table-column prop="time" label="日期"></el-table-column>
         <el-table-column prop="period" label="时间"></el-table-column>
+        <el-table-column prop="number" label="未签人数"></el-table-column>
         <el-table-column label="操作" width="200px">
           <template #default="{row}">
             <el-button type="primary" @click="onSignIn(row)">签到</el-button>
