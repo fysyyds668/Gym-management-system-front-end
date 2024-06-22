@@ -17,6 +17,11 @@ import BadMaterialManagementComponent from "@/views/BadMaterialManagementCompone
 import SignInComponent from "@/views/SignInComponent.vue";
 import signInInformation from "@/views/signInInformation.vue";
 import {userUserStore} from "@/stores/index.js";
+import userHome from "@/components/userHome.vue";
+import userBook from "@/userComponent/userBook.vue";
+import userClass from "@/userComponent/userClass.vue";
+import userHomePage from "@/userComponent/userHomePage.vue";
+import userSelf from "@/userComponent/userSelf.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,7 +79,7 @@ const router = createRouter({
       ]
     },
     {
-      path:'/',
+      path:'/login',
       name:'Login',
       component:LoginComponent
     },
@@ -82,6 +87,25 @@ const router = createRouter({
       path:'/register',
       name:'register',
       component:RegisterComponent
+    },
+    {
+      path:'/',
+      component:userHome,
+      children:[
+        {
+          path:'userBook',
+          component:userBook
+        },{
+          path:'userClass',
+          component:userClass
+        },{
+          path:'userHomePage',
+          component:userHomePage
+        },{
+          path:'userSelf',
+          component:userSelf
+        }
+      ]
     },
     {
       path: '/about',
@@ -94,13 +118,13 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next)=>{
-  const userStore=userUserStore()
-  if(!userStore.token && to.path!=='/'){
-    next('/')
-  }else {
-    next()
-  }
-})
+// router.beforeEach((to, from, next)=>{
+//   const userStore=userUserStore()
+//   if(!userStore.token && to.path!=='/'){
+//     next('/')
+//   }else {
+//     next()
+//   }
+// })
 
 export default router

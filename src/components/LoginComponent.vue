@@ -35,48 +35,49 @@
         </el-form-item>
       </el-form>
 
-      <el-form
-          :model="formModel"
-          :rules="rules"
-          ref="form"
-          class="form"
-          v-else>
-        <el-form-item>
-          <h1 style="font-weight: bold">登录</h1>
-        </el-form-item>
-        <el-form-item prop="account">
-          <el-input v-model="formModel.account" :prefix-icon="User" placeholder="请输入用户名"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input v-model="formModel.password" :prefix-icon="Lock" type="password" placeholder="请输入密码"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <div >
-            <el-checkbox v-model="check" disabled>记住密码</el-checkbox>
-          </div>
-          <div class="el-link1">
-            <el-link style="color: #ADD8E6 ;background: none">忘记密码?</el-link>
-          </div>
+        <el-form
+            :model="formModel"
+            :rules="rules"
+            ref="form"
+            class="form"
+            v-else>
+          <el-form-item>
+            <h1 style="font-weight: bold">登录</h1>
+          </el-form-item>
+          <el-form-item prop="account">
+            <el-input v-model="formModel.account" :prefix-icon="User" placeholder="请输入用户名"></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input v-model="formModel.password" :prefix-icon="Lock" type="password" placeholder="请输入密码"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <div >
+              <el-checkbox v-model="check" disabled>记住密码</el-checkbox>
+            </div>
+            <div class="el-link1">
+              <el-link style="color: #ADD8E6 ;background: none">忘记密码?</el-link>
+            </div>
 
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="login">
-            登录
-          </el-button>
-        </el-form-item>
-        <el-form-item>
-          <div @click="isRegister=true">
-            <a href="#" style="background: none;color: #181818;">去注册</a><el-icon><Right /></el-icon>
-          </div>
-        </el-form-item>
-      </el-form>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" style="width: 100%" @click="login">
+              登录
+            </el-button>
+          </el-form-item>
+
+          <el-form-item>
+            <div @click="isRegister=true">
+<!--              <a href="#" style="background: none;color: #181818;">去注册</a><el-icon><Right /></el-icon>-->
+            </div>
+          </el-form-item>
+        </el-form>
 
     </el-col>
   </el-row>
 </template>
 
 <script setup>
-import {userRegisterService,userLoginService} from "@/api/user.js";
+import {userRegisterService, userLoginService, adminLoginService} from "@/api/user.js";
 import {User, Lock, Right, Back} from "@element-plus/icons-vue";
 import {ref, watch} from "vue";
 import {ElMessage} from "element-plus";
@@ -86,6 +87,7 @@ import {userUserStore} from "@/stores/index.js";
 const isRegister=ref(false)
 const form=ref()
 const check=ref(true)
+const isAdmin=ref('1')
 
 const formModel=ref({
   account:'',
@@ -94,7 +96,7 @@ const formModel=ref({
 })
 const rules={
   account:[{required:true,message:'请输入用户名',trigger:'blur'},
-    {max:10,message: "用户名不得超过十位字符",trigger: 'blur'}],
+    {max:10,message: "用户名最大为10位字符",trigger: 'blur'}],
   password:[
     {required:true,message:'请输入密码',trigger:'blur'},
     {pattern: /^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]{8,18}$/,message:"密码必须由字母、数字组成，区分大小写,8-18位" ,trigger: 'blur' }],
@@ -116,9 +118,6 @@ const register=async ()=>{
   await form.value.validate();
   console.log("开始注册请求")
   const response=await userRegisterService(formModel.value)
-
-  console.log(response.data.mes)
-  ElMessage.success("注册成功")
   isRegister.value=false
 
 }
@@ -136,14 +135,23 @@ const login=async ()=>{
   userStore.removeToken()
   await form.value.validate()
   console.log("开始登录请求")
-  const response=await userLoginService(formModel.value)
+
+  let response
+  if(isAdmin.value==='1'){
+    response=await adminLoginService(formModel.value)
+  }else if(isAdmin.value==='2'){
+    response=await userLoginService(formModel.value)
+  }
+
   userStore.setToken(response.data.data)
   userStore.setUser(formModel.value.account,formModel.value.password)
+  userStore.setIsAdmin(isAdmin.value)
 
-  console.log(response)
-
-  // ElMessage.success("登陆成功")
-   router.push('home')
+  if(isAdmin.value==='1')
+    router.push('home/homePage')
+  else if(isAdmin.value==='2'){
+    router.push('/userHome/userHomePage')
+  }
 }
 
 

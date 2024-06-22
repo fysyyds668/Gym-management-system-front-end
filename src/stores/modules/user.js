@@ -9,12 +9,16 @@ export const userUserStore=defineStore(
         const token =ref('')
         const userName=ref('')
         const userPwd=ref('')
+        const isAdmin=ref('')
     const setToken = (newToken)=>{
         token.value=newToken
     }
     const setUser=(newUserName,newUserPwd)=>{
         userName.value=newUserName
         userPwd.value=newUserPwd
+    }
+    const setIsAdmin=(newIsAdmin)=>{
+        isAdmin.value=newIsAdmin
     }
     const removeToken=()=>{
         token.value=''
@@ -23,6 +27,9 @@ export const userUserStore=defineStore(
         userName.value=''
         userPwd.value=''
     }
+    const removeIsAdmin=()=>{
+        isAdmin.value=''
+    }
     return{
         token,
         setToken,
@@ -30,7 +37,10 @@ export const userUserStore=defineStore(
         setUser,
         removeUser,
         userName,
-        userPwd
+        userPwd,
+        isAdmin,
+        setIsAdmin,
+        removeIsAdmin
     }
 },{
     persist:true

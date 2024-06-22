@@ -15,7 +15,7 @@
       <div class="spacer"></div>
       <el-sub-menu index="2">
         <template #title>Hello：{{ user.userName }}</template>
-        <el-menu-item index="2-1" @click="onQuit">切换</el-menu-item>
+        <el-menu-item index="2-1" @click="onChange">切换</el-menu-item>
         <el-menu-item index="2-2" @click="onQuit">退出</el-menu-item>
 
       </el-sub-menu>
@@ -150,6 +150,10 @@ const handleOpen = (key: string, keyPath: string[]) => {
 }
 const handleClose = (key: string, keyPath: string[]) => {
   console.log(key, keyPath)
+}
+
+const onChange=()=>{
+  router.push('/login')
 }
 const onQuit=()=>{
   router.push('/')

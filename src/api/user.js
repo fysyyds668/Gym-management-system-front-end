@@ -8,7 +8,10 @@ export const userRegisterService=( {account,password} )=>
 
 //登陆
 export const userLoginService=({account,password})=>
-    request.post("/login/account",{account,password})
+    request.post("/login/user/account",{account,password})
+
+export const adminLoginService=({account,password})=>
+    request.post("/login/manager/account",{account,password})
 
 //查询
 export const vipPageService=({vipName,page, size})=>
