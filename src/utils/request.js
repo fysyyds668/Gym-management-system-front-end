@@ -1,7 +1,7 @@
 import axios from "axios";
 import {ElMessage} from "element-plus";
 import router from "@/router/index.js";
-import {userUserStore} from "@/stores/index.js";
+import {userUserStore, vipUserStore} from "@/stores/index.js";
 
 
 const baseURL='/api'
@@ -16,8 +16,12 @@ instance.interceptors.request.use(
 
         const token=userUserStore().token
         if(token){
-
             config.headers['Authorization']=token
+        }
+
+        const viptoken=vipUserStore().token
+        if(viptoken){
+            config.headers['Authorization']=viptoken
         }
 
         return config;

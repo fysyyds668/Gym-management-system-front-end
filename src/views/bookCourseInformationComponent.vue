@@ -12,7 +12,6 @@ const dialog=ref()
 const tableData=ref([])
 
 const handleDelete=async ({row}:{row:any})=>{
-  console.log(row.id)
 
   const response=await venueReservationDeleteService(row.id)
 
@@ -106,7 +105,6 @@ onMounted(()=>{
           :total="total"
           @current-change="handlePageChange"
       ></el-pagination>
-
 
     </el-card>
   </div>

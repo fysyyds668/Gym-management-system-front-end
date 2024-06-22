@@ -10,3 +10,4 @@ export default pinia
 // export {userUserStore}
 export * from './modules/user.js'
 export * from './modules/counter.ts'
+export * from './modules/vipUser.js'

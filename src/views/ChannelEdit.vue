@@ -78,9 +78,6 @@ const rules={
     <el-form-item  label="年龄" prop="age">
       <el-input v-model="fromModel.age" style="padding-left: 47px"></el-input>
     </el-form-item>
-<!--    <el-form-item  label="性别" prop="sex">-->
-<!--      <el-input v-model="fromModel.sex" style="padding-left: 47px"></el-input>-->
-<!--    </el-form-item>-->
     <el-form-item label="性别" prop="sex">
       <el-radio-group v-model="fromModel.sex" style="padding-left: 47px" size="small">
         <el-radio-button value="男" size="large" >男</el-radio-button>
@@ -91,9 +88,6 @@ const rules={
     <el-form-item  label="电话号码" prop="phone">
       <el-input v-model="fromModel.phone" style="padding-left: 20px"></el-input>
     </el-form-item>
-<!--    <el-form-item  label="会员类型" prop="type">-->
-<!--      <el-input v-model="fromModel.type" style="padding-left: 20px"></el-input>-->
-<!--    </el-form-item>-->
     <el-form-item label="会员类型" prop="type" v-if="fromModel.vipId==null">
       <el-select
           v-model="fromModel.type"

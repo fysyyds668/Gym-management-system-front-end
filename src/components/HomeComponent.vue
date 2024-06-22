@@ -154,9 +154,13 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 const onChange=()=>{
   router.push('/login')
+  userUserStore().removeToken()
+  userUserStore().removeUser()
 }
 const onQuit=()=>{
   router.push('/')
+  userUserStore().removeToken()
+  userUserStore().removeUser()
 }
 </script>
 

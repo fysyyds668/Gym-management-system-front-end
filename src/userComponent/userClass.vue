@@ -39,7 +39,7 @@ Cycling is a healthy and natural way to travel and enjoy the beauty of the trave
 Riding can improve memory. Cycling has the effect of improving memory, relieving Parkinson's disease, and improving the activity of areas of the brain involved in exercise for both people with strong and weak memory. Riding can also prevent cancer. Lack of daily exercise is one of the bad behaviors that can easily cause cancer. Long-term cycling can enhance cardiovascular function, especially aerobic exercise, improve human metabolism and immunity, and play a role in fitness and cancer prevention
       </span>
     </el-drawer>
-    <el-drawer v-model="selectImg3" title="I am the title" :with-header="false" style="background: black">
+    <el-drawer v-model="selectImg3" :direction="'ltr'" title="I am the title" :with-header="false" style="background: black">
       <span style="color: white;font-size:20px">瑜伽YOGA</span>
       <span style="color: white;"><br/><br/>瑜伽（英文：Yoga，印地语：योग）是一个汉语词汇，最早是从印度梵语“yug”或“yuj”而来，其含意为“一致”、“结合”或“和谐”。瑜伽源于古印度，是古印度六大哲学派别中的一系，探寻“梵我合一”的道理与方法。而现代人所称的瑜伽则主要是一系列的修身养心方法。
 大约在公元前300年，印度的大圣哲瑜伽之祖帕坦伽利（英文：Patanjali，印地语：पतंजलि）创作了《瑜伽经》，印度瑜伽在其基础上才真正成形，瑜伽行法被正式订为完整的八支体系。瑜伽是一个通过提升意识，帮助人类充分发挥潜能的体系。
@@ -50,7 +50,7 @@ Yoga posture is a way of movement to achieve harmony and unity of body, mind and
 Yoga is a 5,000-year-old physical, mental and spiritual practice that originated in India with the aim of improving the body and mind. On 11 December 2014, the United Nations General Assembly proclaimed 21 June as International Yoga Day, and in 2015, the first International Yoga Day was held on 21 June
       </span>
     </el-drawer>
-    <el-drawer v-model="selectImg4" title="I am the title" :with-header="false" style="background: black">
+    <el-drawer v-model="selectImg4" :direction="'ltr'" title="I am the title" :with-header="false" style="background: black">
       <span style="color: white;font-size:20px">游泳SWIMMING</span>
       <span style="color: white;"><br/><br/>游泳（Swimming [1]），是人在水的浮力作用下产生向上漂浮，凭借浮力通过肢体有规律的运动，使身体在水中有规律运动的技能。
 17世纪60年代，英国不少地区的游泳活动就开展得相当活跃。1828年，英国在利物浦乔治码头修造了第一个室内游泳池，这种泳池到19世纪30年代，在英国各大城市相继出现。1837年，在英国伦敦成立了第一个游泳组织，同时举办了英国最早的游泳比赛。1896年，游泳被列为奥运会竞赛项目。 [2]

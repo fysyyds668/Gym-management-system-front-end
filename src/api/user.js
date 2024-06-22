@@ -31,6 +31,11 @@ export const updateInfService=({vipId,name, age, sex, phone, type, identityCard}
 export const addUserService=({vipId,name, age, sex, phone, type, identityCard,height,weight,bloodPressure,heartRate,numberClass})=>{
     return  request.post("/vip/add",{vipId,name, age, sex, phone, type, identityCard,height,weight,bloodPressure,heartRate,numberClass})
 }
+export const userFindService=(vipId)=>
+    request.get('/user/get/userinf',{params:{vipId}})
+
+export const userUpdateService=({screenName,name, age, sex, phone,identityCard})=>
+    request.post('/user/update/introduce',{screenName,name, age, sex, phone,identityCard})
 
 
 

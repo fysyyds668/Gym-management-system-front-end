@@ -145,7 +145,6 @@ const login=async ()=>{
 
   userStore.setToken(response.data.data)
   userStore.setUser(formModel.value.account,formModel.value.password)
-  userStore.setIsAdmin(isAdmin.value)
 
   if(isAdmin.value==='1')
     router.push('home/homePage')

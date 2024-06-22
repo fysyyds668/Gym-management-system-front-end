@@ -31,6 +31,8 @@ const onJoin=()=>{
 <template>
 <div class="container">
 
+  <div class="container2"></div>
+
   <el-row >
     <el-col :span="10"></el-col>
     <el-col :span="4"><span style="font-size: 30px;color: white">环境SURROUNDING</span></el-col>
@@ -99,7 +101,20 @@ const onJoin=()=>{
   top: 60px;
   bottom: 0px;
   background: grey;
+
+  background: url('@/recourse/image/jpg1.jpg') no-repeat center center;
+  background-size: cover;
 }
+.container2 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: grey;
+  filter:alpha(Opacity=80);
+  -moz-opacity:0.5;
+  opacity: 0.6;
+}
+
 .el-carousel__item h3 {
   color: #475669;
   opacity: 0.75;
