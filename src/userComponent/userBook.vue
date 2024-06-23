@@ -184,6 +184,21 @@ const onMyBook=async ()=>{
    // const response=await userLookBook(vipId1.value)
    // tableData1.value=response.data.data
 }
+
+const sign=ref({
+  vipId:'',
+  courseId:'',
+  coachId:'',
+  classTime:'',
+  period:''
+})
+const isSign=ref(false)
+const onSign=(row)=>{
+
+  sign.value={...row}
+  console.log(sign.value)
+
+}
 </script>
 
 <template>
@@ -274,6 +289,9 @@ const onMyBook=async ()=>{
                         circle
                         type="danger"
                         @click="handleDelete({row})">
+                    </el-button>
+                    <el-button type="primary" @click="onSign({row})">
+                      签到
                     </el-button>
                   </template>
                 </el-table-column>
