@@ -7,11 +7,26 @@ import {venueReservationGetPageService,venueReservationDeleteService} from '@/ap
 import type { TabsPaneContext } from 'element-plus'
 import {userUserStore, vipUserStore} from '@/stores';
 import {Delete} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
+import {userBookService, userLookBook} from "@/api/user";
+import request from "@/utils/request";
 
 const activeName = ref('first')
+const tableData1=ref([])
+const handleClick = async (tab: TabsPaneContext, event: Event) => {
+  //console.log(tab, event)
 
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
+  const vipId1=ref({
+    vipId:'',
+    courseName:'',
+    coachName:'',
+    page:'1',
+    size:'10'
+  })
+
+  vipId1.value.vipId=vipStore.vipId
+  const response=await request.post('/user/get/yibooked',vipId1.value)
+  tableData1.value=response.data.data.pageList
 }
 
 const formModel=ref({
@@ -26,7 +41,7 @@ const onLoginSuccess=ref(false)
 const userStore=userUserStore()
 const vipStore=vipUserStore()
 const tableData=ref([])
-const tableData1=ref([])
+
 
 //表格
 const searchText=ref('')
@@ -35,8 +50,15 @@ const currentPage=ref(1)
 const pageSize=ref(5)
 const dialog=ref()
 const searchText1=ref('')
+const isBook=ref(false)
 
-
+const bookInf=ref({
+  vipId: '',
+  courseId: '',
+  coachId: '',
+  time: '',
+  period: ''
+})
 //获取验证码
 const onCheck=async ()=>{
   const res=await userGetCodeService(formModel.value.phone)
@@ -112,9 +134,18 @@ onMounted(()=>{
   }
 
 })
-const onBook=(row)=>{
+const onBook=async (row)=>{
 
-  console.log(row)
+  if(vipStore.vipId){
+    isBook.value=true
+    bookInf.value={...row}
+    bookInf.value.vipId=vipStore.vipId
+    console.log(bookInf.value)
+
+  }else {
+    ElMessage.error('您还不是会员，请办理会员卡')
+  }
+
 }
 const onSearch=()=>{
   fetchData(currentPage.value,pageSize.value)
@@ -124,133 +155,44 @@ const handleDelete=async ({row}:{row:any})=>{
   const response=await venueReservationDeleteService(row.id)
   fetchData(currentPage.value,pageSize.value)
 
+  const vipId1=ref({
+    vipId:'',
+    courseName:'',
+    coachName:'',
+    page:'1',
+    size:'10'
+  })
+
+  vipId1.value.vipId=vipStore.vipId
+  const response1=await request.post('/user/get/yibooked',vipId1.value)
+  tableData1.value=response1.data.data.pageList
+
+}
+//提交预约
+const onSubmit=async ()=>{
+   await userBookService(bookInf.value)
+
+  await fetchData(currentPage.value,pageSize.value)
+  isBook.value=false
 }
 
+
+const onMyBook=async ()=>{
+
+   // vipId1.value.vipId=vipStore.vipId
+   // console.log(vipId1.value)
+   // const response=await userLookBook(vipId1.value)
+   // tableData1.value=response.data.data
+}
 </script>
 
 <template>
   <div class="container">
-    <el-row class="container1" v-if="!onLoginSuccess">
-      <el-col :span="6"></el-col>
-      <el-col :span="12"  class="content1">
-        <el-form
-            v-model="formModel"
-            v-if="isSignIn">
 
-          <el-row>
-            <el-form-item>
-              <span style="color: white;font-size: 40px">现在开始，刚刚好</span><div style="width: 300px"></div>
-            </el-form-item>
-          </el-row>
-
-          <el-row>
-            <el-form-item>
-              <span style="color: grey;font-size: 15px">让你两个月内蜕变为“熟男”</span>
-            </el-form-item>
-          </el-row>
-
-          <el-row :gutter="10"  >
-            <el-col :span="12">
-              <el-form-item label="" prop="userAccount">
-                <span style="color: white">用户名</span>
-                <el-input v-model="formModel.account" placeholder="请输入用户名"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="userPwd">
-                <span style="color: white">密码</span>
-                <el-input v-model="formModel.password" type="password" placeholder="请输入密码"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row :gutter="10"  >
-            <el-col :span="12">
-              <el-form-item label="" prop="userTel">
-                <span style="color: white">电话号码</span>
-                <el-input v-model="formModel.phone" placeholder="请输入验证码"></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-row>
-                <el-form-item prop="userCheck">
-                  <span style="color: white">验证码</span>
-                  <el-input v-model="formModel.code" placeholder="请输入验证码"></el-input>
-                  <span style="color: darkorange" @click="onCheck">发送验证码</span>
-                </el-form-item>
-              </el-row>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-button type="warning" @click="signIn">立即体验</el-button>
-          </el-row>
-          <el-row style="height: 100px">
-            <span style="color: darkorange" @click="onSignOn">已有账户？去登录</span>
-          </el-row>
-
-        </el-form>
-
-        <!--        账号登录-->
-        <el-form
-            v-model="formModel"
-            v-else>
-          <el-row>
-            <el-form-item>
-              <span style="color: white;font-size: 40px">欢迎回来，请登录</span><div style="width: 300px"></div>
-            </el-form-item>
-          </el-row>
-
-          <el-row>
-            <el-form-item>
-              <span style="color: grey;font-size: 15px">让你两个月内蜕变为“熟男”</span>
-            </el-form-item>
-          </el-row>
-
-          <el-row :gutter="10"  >
-            <el-col :span="12">
-              <el-form-item label="" prop="userAccount">
-                <span style="color: white" v-if="isPhoneLogin">电话号码</span>
-                <span style="color: white" v-else>用户名</span>
-
-                <el-input v-model="formModel.phone" placeholder="请输入电话号码" v-if="isPhoneLogin"></el-input>
-                <el-input v-model="formModel.account" placeholder="请输入用户名" v-else></el-input>
-              </el-form-item>
-            </el-col>
-
-            <el-col :span="12">
-              <el-form-item prop="userPwd">
-                <span style="color: white" v-if="isPhoneLogin">验证码</span>
-                <span style="color: white" v-else>密码</span>
-                <el-input v-model="formModel.code"  placeholder="请输入验证码" v-if="isPhoneLogin"></el-input>
-                <span style="color: darkorange" @click="onCodeLogin" v-if="isPhoneLogin">发送验证码</span>
-                <el-input v-model="formModel.password" type="password" placeholder="请输入密码" v-else></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-
-          <el-row>
-            <el-button type="warning" @click="onLogin">登录</el-button>
-          </el-row>
-          <el-row>
-            <span style="color: darkorange" @click="onPhoneLogin" v-if="isPhoneLogin">账号密码登录</span>
-            <span style="color: darkorange" @click="onPwdLogin" v-else>电话号码登录</span>
-          </el-row>
-
-          <el-row style="height: 100px">
-            <span style="color: darkorange" @click="onSignIn">没有帐户？去注册</span>
-          </el-row>
-        </el-form>
-
-      </el-col>
-    </el-row>
-
-    <!--    个人中心-->
-    <el-row class="container2" v-if="onLoginSuccess">
+    <el-row class="container2" >
       <el-col :span="3" ></el-col>
       <el-col :span="18">
-        <el-card style="height: 800px">
+        <el-card style="height: 800px;background-color:transparent;border: none">
           <el-tabs v-model="activeName" type="border-card" style="font-size: 20px;" @tab-click="handleClick">
 
             <el-tab-pane label="选课中心" name="first">
@@ -267,9 +209,8 @@ const handleDelete=async ({row}:{row:any})=>{
               </el-row>
 
               <el-row style="height: 50px">
-
               </el-row>
-              <el-table :data="tableData" style="height: 500px">
+              <el-table :data="tableData" style="height: 500px;">
                 <el-table-column type="index" label="序号" width="200px"></el-table-column>
                 <el-table-column prop="coachId" label="教练ID"></el-table-column>
                 <el-table-column prop="coachName" label="教练名称"></el-table-column>
@@ -303,24 +244,22 @@ const handleDelete=async ({row}:{row:any})=>{
             </el-tab-pane>
 
 
-            <el-tab-pane label="我的选课" name="fourth">
+            <el-tab-pane label="我的选课" name="fourth" @click="onMyBook">
 
-              <el-row :gutter="15" style="top: 15px">
-                <el-col :span="6">
-                  <el-input v-model="searchText" placeholder="请输入要查找的课程"></el-input>
-                </el-col>
-                <el-col :span="8">
-                  <el-button type="primary">查询</el-button>
-                </el-col>
-              </el-row>
+<!--              <el-row :gutter="15" style="top: 15px">-->
+<!--                <el-col :span="6">-->
+<!--                  <el-input v-model="searchText" placeholder="请输入要查找的课程"></el-input>-->
+<!--                </el-col>-->
+<!--                <el-col :span="8">-->
+<!--                  <el-button type="primary">查询</el-button>-->
+<!--                </el-col>-->
+<!--              </el-row>-->
 
               <el-row style="height: 50px"/>
 
               <el-table :data="tableData1" style="height: 500px">
                 <el-table-column type="index" label="序号" width="100px"></el-table-column>
                 <el-table-column prop="id" label="id" v-if="false"></el-table-column>
-                <el-table-column prop="vipId" label="会员ID"></el-table-column>
-                <el-table-column prop="vipName" label="会员名"></el-table-column>
                 <el-table-column prop="coachId" label="教练ID"></el-table-column>
                 <el-table-column prop="coachName" label="教练名称"></el-table-column>
                 <el-table-column prop="courseId" label="课程号" ></el-table-column>
@@ -353,17 +292,22 @@ const handleDelete=async ({row}:{row:any})=>{
                   :total="total"
                   @current-change="handlePageChange"
               ></el-pagination>
-
             </el-tab-pane>
-
           </el-tabs>
         </el-card>
-
       </el-col>
-
       <el-col :span="6" ></el-col>
-
     </el-row>
+
+    <el-dialog v-model="isBook" :title="'是否预约该课程？'" width="30%">
+
+      <template #footer >
+        <span class="dialog-footer">
+          <el-button @click="isBook=false">取消</el-button>
+          <el-button type="primary" @click="onSubmit">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
 
     <span style="color: darkorange;position: absolute;top: 90%;left: 90%" @click="onAdmin">管理员从这里进入</span>
   </div>
@@ -380,6 +324,8 @@ const handleDelete=async ({row}:{row:any})=>{
   background: #000000;
 
 }
+
+
 .content1 {
   display: flex;
   justify-content: center;

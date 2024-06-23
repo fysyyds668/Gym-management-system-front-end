@@ -36,6 +36,19 @@ export const userFindService=(vipId)=>
 
 export const userUpdateService=({screenName,name, age, sex, phone,identityCard})=>
     request.post('/user/update/introduce',{screenName,name, age, sex, phone,identityCard})
+//用户预约课程
+export const userBookService=({vipId,courseId,coachId,time,period})=>{
+    request.post('/user/booked/course',{vipId,courseId,coachId,time,period})
+}
+//用户查看预约课程
+export const userLookBook=({vipId,courseName,coachName,page,size})=>{
+    request.post('/user/get/yibooked',{vipId,courseName,coachName,page,size})
+}
+
+//用户注册会员
+export const userSignInVip=({vipId,courseName,coachName,page,size})=>{
+    request.post('',{vipId,courseName,coachName,page,size})
+}
 
 
 

@@ -105,6 +105,8 @@ const onJoin=()=>{
   background: url('@/recourse/image/jpg1.jpg') no-repeat center center;
   background-size: cover;
 }
+
+
 .container2 {
   position: absolute;
   width: 100%;

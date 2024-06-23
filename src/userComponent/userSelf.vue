@@ -7,6 +7,7 @@ import {venueReservationGetPageService,venueReservationDeleteService} from '@/ap
 import type { TabsPaneContext } from 'element-plus'
 import {userUserStore, vipUserStore} from '@/stores';
 import {Delete} from "@element-plus/icons-vue";
+import request from "@/utils/request";
 
 const activeName = ref('first')
 
@@ -75,10 +76,23 @@ const onLogin=async ()=>{
 
   if(response.data.data.vipId===null)
     response.data.data.vipId=''
+
+  //存入pinia
   vipStore.setVipId(response.data.data.vipId)
   vipStore.setToken(response.data.data.token)
   vipStore.setUser(formModel.value.account,formModel.value.password)
 
+
+    const vipId=response.data.data.vipId
+    console.log(vipStore.token)
+    const res=await request.get('/user/get/userinf',{params:{vipId}})
+
+    vipStore.setFitness(res.data.data.height,res.data.data.weight,res.data.data.bloodPressure,
+        res.data.data.heartRate,res.data.data.numberClass)
+    vipStore.setUserInf(res.data.data.age,res.data.data.sex,
+        res.data.data.phone, res.data.data.identityCard,res.data.data.screenName)
+
+  location.reload()
 }
 const onPwdLogin=()=>{
   isPhoneLogin.value=true
@@ -125,7 +139,6 @@ const handleDelete=async ({row}:{row:any})=>{
   fetchData(currentPage.value,pageSize.value)
 
 }
-
 </script>
 
 <template>
@@ -247,134 +260,8 @@ const handleDelete=async ({row}:{row:any})=>{
     </el-row>
 
 <!--    个人中心-->
-    <el-row class="container2" v-if="onLoginSuccess">
-      <el-col :span="3" ></el-col>
-      <el-col :span="18">
-        <el-card style="height: 800px">
-          <el-tabs v-model="activeName" type="border-card" style="font-size: 20px;" @tab-click="handleClick">
-            <el-tab-pane label="个人信息" name="first">
-
-              <el-row><span>vipID：</span></el-row>
-              <el-row><span>姓名：</span></el-row>
-              <el-row><span>年龄：</span></el-row>
-              <el-row><span>性别：</span></el-row>
-              <el-row><span>电话号码：</span></el-row>
-              <el-row><span>电话号码：</span></el-row>
-            </el-tab-pane>
-
-            <el-tab-pane label="健身数据" name="second">健身数据</el-tab-pane>
-
-            <el-tab-pane label="选课中心" name="third">
-              <el-row :gutter="15" style="top: 15px">
-                <el-col :span="6">
-                  <el-input v-model="searchText" placeholder="请输入要查找的教练"></el-input>
-                </el-col>
-                <el-col :span="6">
-                  <el-input v-model="searchText1" placeholder="请输入要查找的课程"></el-input>
-                </el-col>
-                <el-col :span="8">
-                  <el-button type="primary" @click="onSearch">查询</el-button>
-                </el-col>
-              </el-row>
-
-              <el-row style="height: 50px">
-
-              </el-row>
-              <el-table :data="tableData" style="height: 500px">
-                <el-table-column type="index" label="序号" width="200px"></el-table-column>
-                <el-table-column prop="coachId" label="教练ID"></el-table-column>
-                <el-table-column prop="coachName" label="教练名称"></el-table-column>
-                <el-table-column prop="courseId" label="课程号" ></el-table-column>
-                <el-table-column prop="courseName" label="课程名" ></el-table-column>
-                <el-table-column prop="time" label="日期"></el-table-column>
-                <el-table-column prop="period" label="时间"></el-table-column>
-                <el-table-column prop="number" label="剩余"></el-table-column>
-                <el-table-column label="操作" width="200px">
-                  <template #default="{row}">
-                    <el-button type="primary" @click="onBook(row)">预约</el-button>
-                  </template>
-                </el-table-column>
-
-                <template #empty>
-                  <el-empty description="没有数据"></el-empty>
-                </template>
-              </el-table>
-
-              <el-pagination
-                  class="pagination1"
-                  v-model:current-page="currentPage"
-                  v-model:page-size="pageSize"
-                  :page-sizes="[5, 6, 7, 8,9,10]"
-                  layout="total, sizes, prev, pager, next, jumper"
-                  :total="total"
-                  @current-change="handlePageChange"
-                  style="bottom: 20px"
-              >
-              </el-pagination>
-            </el-tab-pane>
 
 
-            <el-tab-pane label="我的选课" name="fourth">
-
-              <el-row :gutter="15" style="top: 15px">
-                <el-col :span="6">
-                  <el-input v-model="searchText" placeholder="请输入要查找的课程"></el-input>
-                </el-col>
-                <el-col :span="8">
-                  <el-button type="primary">查询</el-button>
-                </el-col>
-              </el-row>
-
-              <el-row style="height: 50px"/>
-
-              <el-table :data="tableData1" style="height: 500px">
-                <el-table-column type="index" label="序号" width="100px"></el-table-column>
-                <el-table-column prop="id" label="id" v-if="false"></el-table-column>
-                <el-table-column prop="vipId" label="会员ID"></el-table-column>
-                <el-table-column prop="vipName" label="会员名"></el-table-column>
-                <el-table-column prop="coachId" label="教练ID"></el-table-column>
-                <el-table-column prop="coachName" label="教练名称"></el-table-column>
-                <el-table-column prop="courseId" label="课程号" ></el-table-column>
-                <el-table-column prop="courseName" label="课程名" ></el-table-column>
-                <el-table-column prop="time" label="日期"></el-table-column>
-                <el-table-column prop="period" label="时间"></el-table-column>
-                <el-table-column label="操作" width="200px">
-                  <template #default="{row}">
-                    <el-button
-                        :icon="Delete"
-                        plain
-                        circle
-                        type="danger"
-                        @click="handleDelete({row})">
-                    </el-button>
-                  </template>
-                </el-table-column>
-
-                <template #empty>
-                  <el-empty description="没有数据"></el-empty>
-                </template>
-              </el-table>
-
-              <el-pagination
-                  class="pagination1"
-                  v-model:current-page="currentPage"
-                  v-model:page-size="pageSize"
-                  :page-sizes="[5, 6, 7, 8,9,10]"
-                  layout="total, sizes, prev, pager, next, jumper"
-                  :total="total"
-                  @current-change="handlePageChange"
-              ></el-pagination>
-
-            </el-tab-pane>
-
-          </el-tabs>
-        </el-card>
-
-      </el-col>
-
-      <el-col :span="6" ></el-col>
-
-    </el-row>
 
     <span style="color: darkorange;position: absolute;top: 90%;left: 90%" @click="onAdmin">管理员从这里进入</span>
   </div>

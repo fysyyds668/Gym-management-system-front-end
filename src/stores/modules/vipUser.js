@@ -15,6 +15,11 @@ export const vipUserStore=defineStore(
         const userAge=ref('')
         const userID=ref('')
         const screenName=ref('')
+        const height=ref('')
+        const weight=ref('')
+        const blood=ref('')
+        const heart=ref('')
+        const classNum=ref('')
         const setToken = (newToken)=>{
             token.value=newToken
         }
@@ -34,6 +39,14 @@ export const vipUserStore=defineStore(
             vipId.value=newVipId
         }
 
+        const setFitness=(newHeight,newWight,newBlood,newHeart,newClassNum)=>{
+            height.value=newHeight
+            weight.value=newWight
+            heart.value=newHeart
+            blood.value=newBlood
+            classNum.value=newClassNum
+        }
+
         const removeToken=()=>{
             token.value=''
         }
@@ -48,6 +61,13 @@ export const vipUserStore=defineStore(
         }
         const removeVipId=()=>{
             vipId.value=''
+        }
+        const removeFitness=()=>{
+            height.value='',
+            weight.value='',
+            heart.value='',
+            blood.value='',
+            classNum.value=''
         }
         return{
             token,
@@ -65,7 +85,14 @@ export const vipUserStore=defineStore(
             userID,
             userSex,
             screenName,
-            setUserInf
+            setUserInf,
+            setFitness,
+            weight,
+            heart,
+            blood,
+            height,
+            classNum,
+            removeFitness
         }
     },{
         persist:true
