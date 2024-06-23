@@ -52,9 +52,7 @@
               <el-menu-item index="2-2">
                 <router-link to="/home/membershipManagement" class="custom-link">会籍信息</router-link>
               </el-menu-item>
-              <el-menu-item index="2-3">
-                <router-link to="/home/membershipConsumption" class="custom-link">会员卡消费情况</router-link>
-              </el-menu-item>
+
           </el-sub-menu>
 
           <el-sub-menu index="3">

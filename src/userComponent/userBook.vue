@@ -185,19 +185,27 @@ const onMyBook=async ()=>{
    // tableData1.value=response.data.data
 }
 
-const sign=ref({
+const sign1=ref({
   vipId:'',
   courseId:'',
   coachId:'',
   classTime:'',
-  period:''
+  period:'',
+  signCode:''
 })
 const isSign=ref(false)
 const onSign=(row)=>{
 
-  sign.value={...row}
-  console.log(sign.value)
+  sign1.value={...row}
+  sign1.value.classTime=row.time
+  isSign.value=true
 
+}
+const onSign1=async ()=>{
+
+  console.log(sign1.value,'=====================')
+  const response=await request.post('/user/signin',sign1.value)
+  isSign.value=false
 }
 </script>
 
@@ -290,7 +298,7 @@ const onSign=(row)=>{
                         type="danger"
                         @click="handleDelete({row})">
                     </el-button>
-                    <el-button type="primary" @click="onSign({row})">
+                    <el-button type="primary" @click="onSign(row)">
                       签到
                     </el-button>
                   </template>
@@ -323,6 +331,25 @@ const onSign=(row)=>{
         <span class="dialog-footer">
           <el-button @click="isBook=false">取消</el-button>
           <el-button type="primary" @click="onSubmit">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="isSign" :title="'签到'" width="30%">
+
+      <el-form
+      v-model="sign1">
+        <el-form-item label="请输入签到码：" prop="signCode">
+          <el-input v-model="sign1.signCode">
+
+          </el-input>
+        </el-form-item>
+      </el-form>
+
+      <template #footer >
+        <span class="dialog-footer">
+          <el-button @click="isSign=false">取消</el-button>
+          <el-button type="primary" @click="onSign1">确认</el-button>
         </span>
       </template>
     </el-dialog>

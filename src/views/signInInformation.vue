@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import request from "@/utils/request";
+
 const props=defineProps({
   formModel:{
     type:Object,
@@ -59,15 +61,20 @@ const fetchData=async (page,size)=>{
     console.error(error)
   }
 }
-const handlePageChange=(page)=>{
+const signCode=ref('')
+const handlePageChange=async (page)=>{
   currentPage.value=page
   fetchData(page,pageSize.value)
 }
 
-onMounted(()=>{
+onMounted(async ()=>{
   if (typeof props.formModel === 'string') {
     formModel1.value = JSON.parse(props.formModel);
   }
+
+  const res=await request.post('/signin/get/signincode',formModel1.value)
+  signCode.value=res.data.data
+
   fetchData(currentPage.value,pageSize.value)
 })
 
@@ -108,12 +115,18 @@ const onSearch=()=>{
         </el-col>
         <el-col :span="2">
         <el-select style="border: 0" v-model="isSignIn">
-          <el-option value='已签'>已签</el-option>
-          <el-option value='未签'>未签</el-option>
+          <el-option value='已签' @click="onSearch">已签</el-option>
+          <el-option value='未签' @click="onSearch">未签</el-option>
         </el-select>
       </el-col>
         <el-col :span="8">
           <el-button type="primary" @click="onSearch">查询</el-button>
+        </el-col>
+        <el-col :span="4">
+        </el-col>
+        <el-col :span="4">
+          <span>签到码：</span>
+          <span>{{ signCode }}</span>
         </el-col>
       </el-row>
 

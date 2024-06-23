@@ -35,10 +35,10 @@ instance.interceptors.response.use(
             if(res.data.code.slice(6,7)==='1'){
                 if((res.data.mes!=='')&&(res.data.mes!==null))
                     ElMessage.success(res.data.mes)
-
                 return res
             }
-            ElMessage.error(res.data.mes || '服务异常')
+             // ElMessage.error(res.data.mes || '服务异常')
+              ElMessage.error(res.data.mes)
             return Promise.reject(res.data)
         }else {
             ElMessage.error('账号凭证不存在')

@@ -44,10 +44,7 @@
                 type="primary"
                 @click="handleEdit({ row })">
             </el-button>
-            <el-button
-            type="primary"
-
-            >续费</el-button>
+            <el-button type="primary" @click="renewal(row)">续费</el-button>
 
           </template>
         </el-table-column>
@@ -66,6 +63,21 @@
           :total="total"
           @current-change="handlePageChange"
       ></el-pagination>
+
+      <el-dialog v-model="isRenewal" width="30%" :title="'续费'">
+        <el-form>
+          <el-form-item label="续费">
+            <el-input v-model="onRenewal" placeholder="续费时间在1-12个月"></el-input>
+          </el-form-item>
+        </el-form>
+
+        <template #footer >
+        <span class="dialog-footer">
+          <el-button @click="isRenewal=false">取消</el-button>
+          <el-button type="primary" @click="renewal1">确认</el-button>
+        </span>
+        </template>
+      </el-dialog>
 
       <MenbershipManagementChannelEdit ref="dialog" @success="onSuccess">
       </MenbershipManagementChannelEdit>
@@ -95,7 +107,6 @@ const handleDelete = ({ row }: { row: any }) => {
 
   fetchData(currentPage.value, pageSize.value);
 };
-
 
 
 
@@ -138,7 +149,27 @@ const onSuccess=()=>{
 const onSearch=()=>{
   fetchData(currentPage.value, pageSize.value);
 }
+const isRenewal=ref(false)
+const onRenewal=ref('')
+const vipRenwal1=ref({
+  vipId:'',
+  num:''
+})
+const renewal=(row)=>{
+  isRenewal.value=true
+  vipRenwal1.value.vipId=row.vipId
 
+
+}
+const renewal1=async ()=>{
+  vipRenwal1.value.num=onRenewal.value
+  console.log(vipRenwal1.value)
+
+  await request.post('/vip/renew',vipRenwal1.value)
+
+   isRenewal.value=false
+  fetchData(currentPage.value, pageSize.value);
+}
 </script>
 
 <style scoped>
