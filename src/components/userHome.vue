@@ -29,7 +29,7 @@
         <router-link to="/userSelf" class="custom-link">注册/登录</router-link>
       </el-menu-item>
 
-      <el-sub-menu index="6" v-else>
+      <el-sub-menu v-model="index1" v-else @click="onChange1">
         <template #title v-if="vipStore.token">你好：{{vipUserStore().screenName}}</template>
         <template #title v-else>未登录</template>
         <div style="height: 500px;width:300px;color: white;font-size: 20px;border: black" v-if="!vipStore.vipId">
@@ -304,7 +304,7 @@
     <template #footer>
     <span class="dialog-footer">
       <el-button @click="isEWM=false">取消</el-button>
-      <el-button type="primary" @click="onSignInVip2" >确认</el-button>
+      <el-button type="primary" @click="isEWM=false" >确认</el-button>
     </span>
     </template>
   </el-dialog>
@@ -457,8 +457,19 @@ const onSignInVip1=async ()=>{
   fromModel1.value.phone=vipStore.userPhone
 
   //注册会员
-  const res=await request.post('/user/open/vip',fromModel1.value)
-  vipStore.setVipId(res.data.data.vipId)
+  const res1=await request.post('/user/open/vip',fromModel1.value)
+  vipStore.setVipId(res1.data.data)
+
+    const vipId = res1.data.data
+    const res = await request.get('/user/get/userinf', {params: {vipId}})
+
+    vipStore.setFitness(res.data.data.height, res.data.data.weight, res.data.data.bloodPressure,
+        res.data.data.heartRate, res.data.data.numberClass)
+    vipStore.setUserInf(res.data.data.age, res.data.data.sex,
+        res.data.data.phone, res.data.data.identityCard, res.data.data.screenName, res.data.data.name)
+    vipStore.setDate(res.data.data.vipJoinDate, res.data.data.expirationDate)
+
+
 }
 const onSignInVip2=async ()=>{
   isEWM.value=false
@@ -560,6 +571,23 @@ const renewal1=async ()=>{
   vipStore.setDate(res.data.data.vipJoinDate,res.data.data.expirationDate)
   isRenewal.value=false
 
+}
+
+const onChange1=async ()=>{
+  console.log('qweqweqweqweqe')
+
+  let vipId = vipStore.vipId
+  if(vipId===null)
+    vipId=''
+
+  const res = await request.get('/user/get/userinf', {params: {vipId}})
+  vipStore.setVipId(res.data.data.vipId)
+
+  vipStore.setFitness(res.data.data.height, res.data.data.weight, res.data.data.bloodPressure,
+      res.data.data.heartRate, res.data.data.numberClass)
+  vipStore.setUserInf(res.data.data.age, res.data.data.sex,
+      res.data.data.phone, res.data.data.identityCard, res.data.data.screenName, res.data.data.name)
+  vipStore.setDate(res.data.data.vipJoinDate, res.data.data.expirationDate)
 
 }
 </script>
