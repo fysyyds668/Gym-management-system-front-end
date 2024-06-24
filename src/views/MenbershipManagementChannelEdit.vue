@@ -11,6 +11,8 @@ const fromModel=ref({
   phone:'',
   type:'',
   identityCard:'',
+  joinDate:'',
+  expirationDate:''
 })
 
 const options=[
@@ -30,17 +32,16 @@ const options=[
 const open=(row)=>{
   dialogVisible.value=true
   fromModel.value={...row}
+
 }
 
 const emit=defineEmits(['success'])
-
 const onSubmit=async ()=>{
 
   console.log(fromModel.value)
   const response= await updateInfService(fromModel.value)
 
   dialogVisible.value=false;
-
   emit('success')
 }
 defineExpose({
@@ -74,14 +75,12 @@ const rules={
           </el-option>
         </el-select>
       </el-form-item>
-
-
     </el-form>
+
     <template #footer>
     <span class="dialog-footer">
       <el-button @click="dialogVisible=false">取消</el-button>
       <el-button type="primary" @click="onSubmit">确认</el-button>
-
     </span>
     </template>
   </el-dialog>

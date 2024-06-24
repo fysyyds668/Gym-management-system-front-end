@@ -82,7 +82,6 @@ const onLogin=async ()=>{
   vipStore.setToken(response.data.data.token)
   vipStore.setUser(formModel.value.account,formModel.value.password)
 
-
     const vipId=response.data.data.vipId
     console.log(vipStore.token)
     const res=await request.get('/user/get/userinf',{params:{vipId}})
@@ -90,7 +89,8 @@ const onLogin=async ()=>{
     vipStore.setFitness(res.data.data.height,res.data.data.weight,res.data.data.bloodPressure,
         res.data.data.heartRate,res.data.data.numberClass)
     vipStore.setUserInf(res.data.data.age,res.data.data.sex,
-        res.data.data.phone, res.data.data.identityCard,res.data.data.screenName)
+        res.data.data.phone, res.data.data.identityCard,res.data.data.screenName,res.data.data.name)
+    vipStore.setDate(res.data.data.vipJoinDate,res.data.data.expirationDate)
 
   location.reload()
 }
@@ -139,6 +139,7 @@ const handleDelete=async ({row}:{row:any})=>{
   fetchData(currentPage.value,pageSize.value)
 
 }
+
 </script>
 
 <template>
@@ -260,8 +261,6 @@ const handleDelete=async ({row}:{row:any})=>{
     </el-row>
 
 <!--    个人中心-->
-
-
 
     <span style="color: darkorange;position: absolute;top: 90%;left: 90%" @click="onAdmin">管理员从这里进入</span>
   </div>

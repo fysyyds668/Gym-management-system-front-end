@@ -176,6 +176,18 @@
           <el-row style="height: 20px"></el-row>
           <el-row>
             <el-col :span="2"></el-col>
+            <span>加入日期：</span>
+            <span>{{vipStore.vipJoinDate}}</span>
+          </el-row>
+          <el-row style="height: 20px"></el-row>
+          <el-row>
+            <el-col :span="2"></el-col>
+            <span>到期时间：</span>
+            <span>{{vipStore.expirationDate}}</span>
+          </el-row>
+          <el-row style="height: 20px"></el-row>
+          <el-row>
+            <el-col :span="2"></el-col>
             <el-col :span="12">
               <el-button type="primary" @click="onUpdate">修改信息</el-button>
             </el-col>
@@ -188,6 +200,10 @@
           <el-row style="height: 20px"></el-row>
           <el-row>
             <el-col :span="2"></el-col>
+
+            <el-col :span="12">
+            <el-button type="primary"  @click="renewal">续费会员</el-button>
+          </el-col>
             <el-col :span="10"><el-button type="primary" @click="onQuit">退出登录</el-button></el-col>
           </el-row>
           <el-row style="height: 20px"></el-row>
@@ -323,6 +339,21 @@
   </template>
 </el-dialog>
 
+  <el-dialog v-model="isRenewal" width="30%" :title="'续费'">
+    <el-form>
+      <el-form-item label="续费">
+        <el-input v-model="onRenewal" placeholder="续费时间在1-12个月"></el-input>
+      </el-form-item>
+    </el-form>
+
+    <template #footer >
+        <span class="dialog-footer">
+          <el-button @click="isRenewal=false">取消</el-button>
+          <el-button type="primary" @click="renewal1">确认</el-button>
+        </span>
+    </template>
+  </el-dialog>
+
     <router-view></router-view>
 <!--  </div>-->
 </template>
@@ -380,13 +411,15 @@ const onSubmit=async ()=>{
 
   console.log(fromModel.value)
 
-    await form.value.validate();
-    await userUpdateService(fromModel.value)
+  await form.value.validate();
+  await userUpdateService(fromModel.value)
 
   dialogVisible.value=false;
+
   const response=await userFindService(vipStore.vipId)
+  console.log(response)
   vipStore.setUserInf(response.data.data.age,response.data.data.sex,
-      response.data.data.phone, response.data.data.identityCard,response.data.data.screenName)
+      response.data.data.phone, response.data.data.identityCard,response.data.data.screenName,response.data.data.name)
 }
 
 const onQuit=()=>{
@@ -394,6 +427,7 @@ const onQuit=()=>{
   vipStore.removeToken()
   vipStore.removeVipId()
   vipStore.removeFitness()
+  vipStore.removeDate()
 
   router.push('/userHomePage')
   location.reload()
@@ -405,7 +439,11 @@ const loading=ref(false)
 const isEWM=ref(false)
 const onSignInVip=()=>{
   isSignInVip.value=true
-
+  fromModel1.value.vipId=vipStore.vipId
+  fromModel1.value.sex=vipStore.userSex
+  fromModel1.value.age=vipStore.userAge
+  fromModel1.value.name=vipStore.userName
+  fromModel1.value.identityCard=vipStore.userID
 }
 const onSignInVip1=async ()=>{
   isSignInVip.value=true
@@ -420,8 +458,7 @@ const onSignInVip1=async ()=>{
 
   //注册会员
   const res=await request.post('/user/open/vip',fromModel1.value)
-  vipStore.setToken(res.data.data.vipId)
-
+  vipStore.setVipId(res.data.data.vipId)
 }
 const onSignInVip2=async ()=>{
   isEWM.value=false
@@ -497,6 +534,33 @@ const onUpdateFitness=async ()=>{
       fromModel3.value.heartRate,fromModel3.value.bloodPressure,vipStore.classNum)
 
   isUpdateFitness.value=false
+}
+
+//续费
+const isRenewal=ref(false)
+const onRenewal=ref('')
+const vipRenwal1=ref({
+  vipId:'',
+  num:''
+})
+const renewal=()=>{
+  isRenewal.value=true
+  vipRenwal1.value.vipId=vipStore.vipId
+
+}
+const renewal1=async ()=>{
+  vipRenwal1.value.num=onRenewal.value
+  console.log(vipRenwal1.value)
+
+  await request.post('/vip/renew',vipRenwal1.value)
+
+
+  const vipId=vipStore.vipId
+  const res=await request.get('/user/get/userinf',{params:{vipId}})
+  vipStore.setDate(res.data.data.vipJoinDate,res.data.data.expirationDate)
+  isRenewal.value=false
+
+
 }
 </script>
 

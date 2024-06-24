@@ -25,8 +25,8 @@ export const updateUserService=({vipId,name, age, sex, phone, type})=>
 export const updateFitnessService=({vipId,name,height,weight,bloodPressure,heartRate,numberClass})=>
     request.put("/vip/updete/fitness",{vipId,name,height,weight,bloodPressure,heartRate,numberClass})
 
-export const updateInfService=({vipId,name, age, sex, phone, type, identityCard})=>
-    request.put("/vip/updete/inf",{vipId,name, age, sex, phone, type, identityCard})
+export const updateInfService=({vipId,name, age, sex, phone, type, identityCard,joinDate,expirationDate})=>
+    request.put("/vip/updete/inf",{vipId,name, age, sex, phone, type, identityCard,joinDate,expirationDate})
 
 export const addUserService=({vipId,name, age, sex, phone, type, identityCard,height,weight,bloodPressure,heartRate,numberClass})=>{
     return  request.post("/vip/add",{vipId,name, age, sex, phone, type, identityCard,height,weight,bloodPressure,heartRate,numberClass})
