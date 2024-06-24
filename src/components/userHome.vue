@@ -299,7 +299,8 @@
   </el-dialog>
 
   <el-dialog v-model="isEWM" :title="'微信支付'" width="30%" >
-    <div class="container4"></div>
+<!--    <div class="container4"></div>-->
+    <span>支付服务未开发</span>
 <!--    <img src="@/recourse/image/img20.jpg"  alt="#">-->
     <template #footer>
     <span class="dialog-footer">
