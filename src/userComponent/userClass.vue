@@ -106,7 +106,8 @@ The highest organizing body for swimming is the World Swimming Federation, headq
   position: relative;
   width: 50%;
   height: 50%;
-  background: url('@/recourse/image/img10.jpg') no-repeat center center;
+  /*background: url('@/recourse/image/img10.jpg') no-repeat center center;*/
+  background: url('https://gym-front.oss-cn-beijing.aliyuncs.com/gym-front/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240624162328.jpg?Expires=1719217841&OSSAccessKeyId=TMP.3KgcNg1TwKLeT5xd5dvTUZHhcrDhTTCitHcWeEhiPDNsMCExzkzBsJ13ivNeP5EypE7ymyqbSeRrK3cZHrywa7Zmiy5u3D&Signature=WCo11gXXWALVCPy9UWx0BmW88w0%3D') no-repeat center center;
   background-size: cover;
 
   display: flex;
@@ -119,7 +120,8 @@ The highest organizing body for swimming is the World Swimming Federation, headq
   position: relative;
   width: 50%;
   height: 50%;
-  background: url('@/recourse/image/img11.jpg') no-repeat center center;
+  /*background: url('@/recourse/image/img11.jpg') no-repeat center center;*/
+  background: url('https://gym-front.oss-cn-beijing.aliyuncs.com/gym-front/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_202406241623281.jpg?Expires=1719217945&OSSAccessKeyId=TMP.3KgcNg1TwKLeT5xd5dvTUZHhcrDhTTCitHcWeEhiPDNsMCExzkzBsJ13ivNeP5EypE7ymyqbSeRrK3cZHrywa7Zmiy5u3D&Signature=ZEdDNALtAFfqEbYMDd9aBggZ1kY%3D') no-repeat center center;
   background-size: cover;
 
   display: flex;
@@ -132,7 +134,8 @@ The highest organizing body for swimming is the World Swimming Federation, headq
   position: relative;
   width: 50%;
   height: 50%;
-  background: url('@/recourse/image/img12.jpg') no-repeat center center;
+ /* background: url('@/recourse/image/img12.jpg') no-repeat center center;*/
+  background: url('https://gym-front.oss-cn-beijing.aliyuncs.com/gym-front/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240624162329.jpg?Expires=1719217967&OSSAccessKeyId=TMP.3KgcNg1TwKLeT5xd5dvTUZHhcrDhTTCitHcWeEhiPDNsMCExzkzBsJ13ivNeP5EypE7ymyqbSeRrK3cZHrywa7Zmiy5u3D&Signature=1U8VPf0k8udbKBM%2F1Px%2F%2Fy%2FJqBs%3D') no-repeat center center;
   background-size: cover;
 
   display: flex;
@@ -145,7 +148,8 @@ The highest organizing body for swimming is the World Swimming Federation, headq
   position: relative;
   width: 50%;
   height: 50%;
-  background: url('@/recourse/image/img13.jpg') no-repeat center center;
+  /*background: url('@/recourse/image/img13.jpg') no-repeat center center;*/
+  background: url('https://gym-front.oss-cn-beijing.aliyuncs.com/gym-front/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240624162327.jpg?Expires=1719217808&OSSAccessKeyId=TMP.3KgcNg1TwKLeT5xd5dvTUZHhcrDhTTCitHcWeEhiPDNsMCExzkzBsJ13ivNeP5EypE7ymyqbSeRrK3cZHrywa7Zmiy5u3D&Signature=AcUli7ctbPD0CfeYOj28s7uJhK0%3D') no-repeat center center;
   background-size: cover;
 
   display: flex;
