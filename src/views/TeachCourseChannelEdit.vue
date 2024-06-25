@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {teachCourseUpdateService,teachCourseAddService} from "@/api/teach"
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {ElMessage} from "element-plus";
+import request from "@/utils/request";
 
 const dialogVisble=ref(false)
 const fromModel=ref({
@@ -14,6 +15,7 @@ const fromModel=ref({
   period: '',
   number: ''
 })
+
 
 const form=ref()
 const open=(row)=>{
@@ -76,9 +78,18 @@ const rules={
             placeholder="Pick a day"
         />
       </el-form-item>
+<!--      <el-form-item label="时间" prop="coachId">-->
+<!--        <el-input v-model="fromModel.period"></el-input>-->
+<!--      </el-form-item>-->
+
       <el-form-item label="时间" prop="coachId">
-        <el-input v-model="fromModel.period"></el-input>
+        <el-select  v-model="fromModel.period">
+          <el-option value="上午" label="上午"></el-option>
+          <el-option value="下午" label="下午"></el-option>
+          <el-option value="晚上" label="晚上"></el-option>
+        </el-select>
       </el-form-item>
+
       <el-form-item label="数量" prop="number">
         <el-input type="number" v-model="fromModel.number"></el-input>
       </el-form-item>

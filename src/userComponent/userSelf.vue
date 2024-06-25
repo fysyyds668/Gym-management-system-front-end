@@ -70,6 +70,7 @@ const onLogin=async ()=>{
   if(isPhoneLogin.value){
     response= await userLoginPhoneService(formModel.value.phone,formModel.value.code)
   }else{
+    console.log(formModel.value.account,formModel.value.password,"登录")
     response= await userLoginService(formModel.value)
   }
   onLoginSuccess.value=true

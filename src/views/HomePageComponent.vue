@@ -64,7 +64,6 @@ onMounted(async () => {
     },
     series: [
       {
-        name: 'Access From',
         type: 'pie',
         radius: ['40%', '70%'],
         avoidLabelOverlap: false,
