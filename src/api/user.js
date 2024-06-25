@@ -34,8 +34,8 @@ export const addUserService=({vipId,name, age, sex, phone, type, identityCard,he
 export const userFindService=(vipId)=>
     request.get('/user/get/userinf',{params:{vipId}})
 
-export const userUpdateService=({screenName,name, age, sex, phone,identityCard})=>
-    request.post('/user/update/introduce',{screenName,name, age, sex, phone,identityCard})
+export const userUpdateService=({vipId,screenName,name, age, sex, phone,identityCard})=>
+    request.post('/user/update/introduce',{vipId,screenName,name, age, sex, phone,identityCard})
 //用户预约课程
 export const userBookService=({vipId,courseId,coachId,time,period})=>{
     request.post('/user/booked/course',{vipId,courseId,coachId,time,period})

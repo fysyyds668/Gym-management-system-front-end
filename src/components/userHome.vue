@@ -408,12 +408,13 @@ const open=(row)=>{
 
 
 const onSubmit=async ()=>{
-
-  console.log(fromModel.value)
-
   await form.value.validate();
-  await userUpdateService(fromModel.value)
 
+  if(vipStore.vipId===null)
+    vipStore.setVipId('')
+
+  fromModel.value.vipId=vipStore.vipId
+  await userUpdateService(fromModel.value)
   dialogVisible.value=false;
 
   const response=await userFindService(vipStore.vipId)
